@@ -3,6 +3,6 @@ using Microsoft.AspNetCore.Mvc.ActionConstraints;
 
 public interface IAuthRepository
 {
-    Task<User> RegisterAsync (RegisterRequest request);
-    Task<User> LoginAsync (LoginRequest request);
+    Task<User> RegisterAsync (User user);
+    Task<User> GetByEmailAsync (String email);
 }
