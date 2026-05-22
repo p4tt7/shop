@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.IdentityModel.Tokens;
 
-public class AuthService
+public class AuthService : IAuthService
 {
     public readonly IAuthRepository _repo;
     private readonly IConfiguration _configuration;

@@ -1,11 +1,11 @@
 using System.Net.Http.Headers;
 using Microsoft.EntityFrameworkCore;
 
-public class EfUserRepository : IAuthRepository
+public class UserRepository : IAuthRepository
 {
     private readonly ShopDbContext _db;
 
-    public EfUserRepository(ShopDbContext db)
+    public UserRepository(ShopDbContext db)
     {
         _db = db;
     }
