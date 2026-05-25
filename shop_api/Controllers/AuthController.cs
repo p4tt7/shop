@@ -42,5 +42,14 @@ public class AuthController : ControllerBase
         return Ok(user);
     }
 
+    [HttpPut]
+    [Authorize]
+    public async Task<IActionResult> ChangePassword(ChangePasswordRequest request)
+    {
+        var id = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        await _service.ChangePasswordAsync(id, request);
+        return NoContent();
+    }
+
 }
 

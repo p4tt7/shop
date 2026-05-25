@@ -70,6 +70,17 @@ public class AuthService : IAuthService
         return user_response;
     }
 
+    public async Task ChangePasswordAsync(Guid id, ChangePasswordRequest request)
+    {
+        var user = await _repo.GetByIdAsync(id);
+
+        bool valid = BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.Password);
+        if(!valid) throw new Exception("Incorrect password");
+
+        user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+        await _repo.UpdateUser(user);
+    }
+
     private string GenerateToken(User user)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt__Secret"]!));

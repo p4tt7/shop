@@ -17,7 +17,7 @@ public class UserRepository : IAuthRepository
         return user;
     }
 
-    public async Task<User> GetByEmailAsync(String email)
+    public async Task<User> GetByEmailAsync(string email)
     {
         var user = await _db.Users.FirstOrDefaultAsync(p => p.Email == email);
         if(user == null) throw new Exception("Email is not registered");
@@ -29,6 +29,12 @@ public class UserRepository : IAuthRepository
         var user = await _db.Users.FirstOrDefaultAsync(p => p.Id == id);
         if(user == null) throw new Exception("User does not exist");
         return user;
+    }
+
+    public async Task UpdateUser(User mod_user)
+    {
+        _db.Users.Update(mod_user);
+        await _db.SaveChangesAsync();
     }
 
 }
