@@ -24,4 +24,11 @@ public class UserRepository : IAuthRepository
         return user;
     }
 
+    public async Task<User> GetByIdAsync(Guid id)
+    {
+        var user = await _db.Users.FirstOrDefaultAsync(p => p.Id == id);
+        if(user == null) throw new Exception("User does not exist");
+        return user;
+    }
+
 }

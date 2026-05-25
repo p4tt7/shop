@@ -5,4 +5,5 @@ public interface IAuthRepository
 {
     Task<User> RegisterAsync (User user);
     Task<User> GetByEmailAsync (String email);
+    Task<User> GetByIdAsync (Guid id);
 }

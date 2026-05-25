@@ -1,3 +1,5 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -16,7 +18,12 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Register(RegisterRequest request)
     {
         var user = await _service.RegisterAsync(request);
-        return CreatedAtAction(string.Empty, new {id = user.Id}, user); // replace with Me method once implemented
+        if(user == null)
+        {
+            throw new Exception("An error has occured");
+        }
+
+        return CreatedAtAction(nameof(Me), new {id = user.Id}, user);
     }
 
     [HttpPost("login")]
@@ -24,6 +31,15 @@ public class AuthController : ControllerBase
     {
         var user = await _service.LoginAsync(request);
         return CreatedAtAction(user.Username, user);
+    }
+
+    [HttpGet]  
+    [Authorize]
+    public async Task<IActionResult> Me()
+    {
+        var id = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        var user = await _service.UserAsync(id);
+        return Ok(user);
     }
 
 }

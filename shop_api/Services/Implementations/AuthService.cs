@@ -56,6 +56,20 @@ public class AuthService : IAuthService
         };
     }
 
+    public async Task<UserResponse> UserAsync(Guid id)
+    {
+        var user = await _repo.GetByIdAsync(id);
+
+        var user_response = new UserResponse
+        {
+            Username = user.Username,
+            CreatedAt = user.CreatedAt,
+            Email = user.Email 
+        };
+
+        return user_response;
+    }
+
     private string GenerateToken(User user)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt__Secret"]!));
