@@ -21,4 +21,16 @@ public class ProductRepository : IProductRepository
         
     }
 
+    public async Task<Product> GetProduct(Guid id)
+    {
+        var product = await _db.Products
+        .Include(p => p.Category)
+        .Include(p=> p.Images)
+        .Include(p => p.Reviews)
+            .ThenInclude(r=>r.Reviewer)
+        .FirstOrDefaultAsync(p => p.Id == id);
+
+        return product;
+    }
+
 }

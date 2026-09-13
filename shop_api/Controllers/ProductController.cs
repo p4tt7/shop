@@ -22,5 +22,12 @@ public class ProductController : ControllerBase
         return Ok(products);
     
     }
-    
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetProduct(Guid id)
+    {
+        var product = await _service.GetProduct(id);
+        if(product == null) throw new Exception("An error has occured");
+        return Ok(product);        
+    }
 }
