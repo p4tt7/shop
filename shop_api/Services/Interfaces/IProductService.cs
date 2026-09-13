@@ -1,4 +1,5 @@
 public interface IProductService
 {
-    Task<IEnumerable<Product>> GetAll(int pageSize, int page);
+    Task<PagedResponse<Product>> GetAll(int pageSize, int page);
+    Task<ProductResponse> GetProduct(Guid id);
 }

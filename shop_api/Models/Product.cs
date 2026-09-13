@@ -24,7 +24,6 @@ public class Review
     public Guid UserId {get; set;}
     public User Reviewer { get; set; } = null!;
 
-
 }
 
 
