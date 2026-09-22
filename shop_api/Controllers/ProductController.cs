@@ -30,4 +30,12 @@ public class ProductController : ControllerBase
         if(product == null) throw new Exception("An error has occured");
         return Ok(product);        
     }
+
+    [HttpGet("category/{id}")]
+    public async Task<IActionResult> GetByCategory(Guid id, int pageSize, int page)
+    {
+        var productsByCategory = await _service.GetByCategory(id, pageSize, page);
+        if(productsByCategory == null) throw new Exception("An error has occured");
+        return Ok(productsByCategory);
+    }
 }

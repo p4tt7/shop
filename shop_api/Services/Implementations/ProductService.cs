@@ -6,16 +6,50 @@ public class ProductService : IProductService
         _repo = repo;
     }
 
-    public async Task<PagedResponse<Product>> GetAll(int page, int pageSize)
+    public async Task<PagedResponse<ProductResponse>> GetAll(int page, int pageSize)
     {
         var pagedResponse = await _repo.GetAll(page, pageSize);
-        return pagedResponse;
+        return MapToPagedPResp(pagedResponse, page, pageSize);
     }
 
     public async Task<ProductResponse> GetProduct(Guid id)
     {
         var product = await _repo.GetProduct(id);
+        return MapToProductResponse(product, id);
+    }
 
+    public async Task<PagedResponse<ProductResponse>> GetByCategory(Guid id, int pageSize, int page)
+    {
+        var productsByCategory = await _repo.GetByCategory(id, pageSize, page);
+        return MapToPagedPResp(productsByCategory, page, pageSize);
+    }
+
+
+
+
+
+
+
+
+    public PagedResponse<ProductResponse> MapToPagedPResp(PagedResponse<Product> products, int page, int pageSize)
+    {
+        List<ProductResponse> pagedResponse = new List<ProductResponse>();
+        foreach(var product in products.Items)
+        {
+            pagedResponse.Add(MapToProductResponse(product, product.Id));
+        }
+        return new PagedResponse<ProductResponse>
+        {
+            Items = pagedResponse,
+            TotalItems = products.TotalItems,
+            Page = page,
+            PageSize = pageSize
+        };
+        
+    }
+
+    public ProductResponse MapToProductResponse(Product product, Guid id)
+    {
         List<ImageResponse> ImagesResponse = new List<ImageResponse>();
         List<ReviewResponse> ReviewsResponse = new List<ReviewResponse>();
 
@@ -57,6 +91,6 @@ public class ProductService : IProductService
             },
             Images = ImagesResponse,
             Reviews = ReviewsResponse
-        };
+        }; 
     }
 }
